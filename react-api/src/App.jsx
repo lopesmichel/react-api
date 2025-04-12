@@ -1,30 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
+const url = "http://localhost:3000/products";
+
 function App() {
-  const [count, setCount] = useState(0)
 
-   // 1 - resgatando dados
-  // useEffect(async () => {
-  //   const res = await fetch("http://localhost:3000/products");
+    const [products, setProducts] = useState([])
 
-  //   const data = await res.json();
+    // 1- resgatando dados
+    useEffect(() => {
 
-  //   setProducts(data);
-  // }, []);
+      async function fetchData() {
+        const res = await fetch(url);
 
-  // 2 - add product
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+        const data = await res.json();
 
-    const product = {
-      name,
-      price,
-    };
+        setProducts(data);
+      }
+
+      fetchData();
+    }, []);
+
+
+    
+
+    console.log(products)
   return (
-    <div className='App'>
-      
+    <div className='App'>     
       <h1>Lista de produtos</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - R$: {product.price}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
